@@ -86,14 +86,14 @@ private:
     wchar_t path[MAX_PATH];
 
     QString m_filename = "C:/Projects/myBrowser/ico/magnifyingGlass001.png";
-    QString m_resourcePath;
+    QString m_resourcePath = QString((qint64)MAX_PATH, Qt::Initialization::Uninitialized);
     QString* m_resourcePathptr = nullptr;
     QVarLengthArray<QImage, 1> m_frames;
     QImageReader m_reader;
     QColor m_errclr1 = QColor(0,0,0,255);
     QColor m_errclr2 = QColor(255, 60, 255, 255);
-    uchar m_errData[6] =  {1,0, 1,0,0,1}; // Why did this combination work..?
-    QImage err_img = QImage(m_errData, 2,  2,  QImage::Format::Format_Indexed8);
+    uchar m_errData[4] =  {1,0,0,1};
+    QImage err_img = QImage(m_errData, 2,  2, 2,  QImage::Format::Format_Indexed8);
 
 
 };
