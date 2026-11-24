@@ -1,6 +1,5 @@
 #pragma once
 #include <QtQml/qqml.h>
-// #include "qqmlintegration.h"
 #include <QObject>
 #include <QDebug>
 #include <QImage>
@@ -59,10 +58,6 @@ public:
     }
 
     Q_ImageSource(QObject* parent = nullptr){
-        err_img.setColorCount(2);
-        err_img.setColor(1, m_errclr2.rgb());
-        err_img.setColor(0, m_errclr1.rgb());
-
         DWORD bytesWritten =  GetModuleFileNameW(NULL, path, MAX_PATH);
         qDebug()<<"PATH: " << bytesWritten;
         qDebug()<< QString(path);
@@ -79,21 +74,15 @@ public:
         this ->readFrames();
     }
 
-
-
 private:
-    Q_SIGNAL void pathReady();
-    wchar_t path[MAX_PATH];
 
+    QVarLengthArray<QImage, 1> m_frames;
+    QString* m_resourcePathptr = nullptr;
+    QImageReader m_reader;
     QString m_filename = "C:/Projects/myBrowser/ico/magnifyingGlass001.png";
     QString m_resourcePath = QString((qint64)MAX_PATH, Qt::Initialization::Uninitialized);
-    QString* m_resourcePathptr = nullptr;
-    QVarLengthArray<QImage, 1> m_frames;
-    QImageReader m_reader;
-    QColor m_errclr1 = QColor(0,0,0,255);
-    QColor m_errclr2 = QColor(255, 60, 255, 255);
-    uchar m_errData[4] =  {1,0,0,1};
-    QImage err_img = QImage(m_errData, 2,  2, 2,  QImage::Format::Format_Indexed8);
-
-
+    inline static const unsigned char m_errData[8] =  {0x00, 0x00,  0xFF, 0xF9, 0xFF, 0xF9, 0x00, 0x00};
+    const QImage err_img = QImage(m_errData, 2,  2, 4,   QImage::Format::Format_RGB16); // m_errData may be defined later in the class..
+    wchar_t path[MAX_PATH];
+    Q_SIGNAL void pathReady();
 };

@@ -44,9 +44,7 @@ protected:
         if(! node)node = new QSGNode();
         node ->removeAllChildNodes();
         Q_ImageNode* texnode = new Q_ImageNode(m_src_ptr->requestFrame(-1), this, true);
-        texnode->markDirty(QSGNode::DirtyForceUpdate);
         node ->appendChildNode(texnode);
-        // node->markDirty(QSGNode::DirtyStateBit::DirtyNodeAdded);
 #else
         QSGSimpleTextureNode* texnode = static_cast<QSGSimpleTextureNode*>(node);
         if(!texnode) texnode = new QSGSimpleTextureNode;
