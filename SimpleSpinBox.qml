@@ -167,7 +167,6 @@ Rectangle{
       property alias cursorVisible: __content.cursorVisible;
       property alias renderType: __content.renderType;
 
-
       Keys.onUpPressed: ()=>{rootrect.increment(); rootrect.forceActiveFocus();}
       Keys.onDownPressed: ()=>{rootrect.decrement(); rootrect.forceActiveFocus();}
 
