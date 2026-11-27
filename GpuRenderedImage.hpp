@@ -34,7 +34,7 @@ public:
         // qDebug() <<ptr;
         // Q_ImageSource* ptr_converted = qobject_cast<Q_ImageSource*>(ptr);
         if(m_src_ptr != ptr){m_src_ptr = ptr; emit imgSrcChanged();}
-        img_cpy = m_src_ptr->requestFrame(-1);
+        // img_cpy = m_src_ptr->requestFrame(-1);
     }
 protected:
     QSGNode* updatePaintNode(QSGNode* node, UpdatePaintNodeData *updatePaintNodeData )override{
@@ -43,7 +43,8 @@ protected:
 #ifdef EXPERIMENTAL_USAGE
         if(! node)node = new QSGNode();
         node ->removeAllChildNodes();
-        Q_ImageNode* texnode = new Q_ImageNode(m_src_ptr->requestFrame(-1), this, true);
+        Q_ImageNode* texnode = new Q_ImageNode(m_src_ptr->requestFrame(-1), this, QQuickWindow::TextureIsOpaque, true);
+        texnode ->markDirty(QSGNode::DirtyStateBit::DirtyMaterial);
         node ->appendChildNode(texnode);
 #else
         QSGSimpleTextureNode* texnode = static_cast<QSGSimpleTextureNode*>(node);
@@ -71,7 +72,7 @@ protected:
 
 
 private:
-    QImage img_cpy;
+    // QImage img_cpy;
     // QSGTexture* tex;
     // QRect boundingrect = this ->boundingRect().toRect();
     Q_ImageSource*m_src_ptr;

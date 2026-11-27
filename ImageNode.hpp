@@ -3,7 +3,7 @@
 #include <QSGSimpleTextureNode>
 #include <QQuickItem>
 #include <QSGTexture>
-#include <QPointer>
+#include <QQuickWindow>
 #include<QRect>
 
 class Q_ImageNode : public QSGSimpleTextureNode{
@@ -13,22 +13,18 @@ public:
             // qDebug() <<"proceeding!";
             QSGTexture* tex = contextItem->window()->createTextureFromImage(img, QQuickWindow::CreateTextureOption::TextureHasAlphaChannel);
             this->setTexture(tex);
-            // qDebug()<<tex;
         }
     }
-    Q_ImageNode(QQuickItem* contextItem =nullptr, QSGTexture* tex =nullptr, const bool ownsTexture = false, QRect override_rect = QRect(-1, -1, -1, -1) ) {
+    Q_ImageNode(QQuickItem* contextItem =nullptr, QSGTexture* tex =nullptr, const QQuickWindow::CreateTextureOption option = QQuickWindow::TextureHasAlphaChannel, const bool ownsTexture = false, QRect override_rect = QRect(-1, -1, -1, -1) ) {
         this ->setOwnsTexture(ownsTexture);
         if( override_rect == QRect(-1,-1,-1,-1) ) {
             this ->setRect( contextItem->boundingRect().toRect() ); }
         else
             this->setRect(override_rect);
-        // tex = tex;
         this->setTexture(tex);
     }
-    Q_ImageNode(const QImage& img, QQuickItem* contextItem =nullptr, const bool ownsTexture = false, const QRect override_rect = QRect(-1, -1, -1, -1) ){
+    Q_ImageNode(const QImage& img, QQuickItem* contextItem =nullptr,const QQuickWindow::CreateTextureOption option = QQuickWindow::TextureHasAlphaChannel, const bool ownsTexture = false, const QRect override_rect = QRect(-1, -1, -1, -1) ){
         this ->setOwnsTexture(ownsTexture);
-        // this->setSourceRect(QRectF(0.0, 0.0, 1.0,1.0));
-        // qDebug()<<this->sourceRect();
         if( override_rect == QRect(-1,-1,-1,-1) ) {
             this ->setRect( contextItem->boundingRect().toRect() ); }
         else
@@ -36,8 +32,6 @@ public:
         this->setTextureFromImage(img, contextItem);
     }
 private:
-    // QPointer<QQuickItem> contextItem = nullptr;
-    // QPointer<QSGTexture> tex = nullptr;
 };
 
 #endif // IMAGENODE_HPP
